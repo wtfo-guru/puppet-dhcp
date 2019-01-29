@@ -43,49 +43,9 @@ class dhcp::dhcp6 (
       $dhcp6_interfaces = $interfaces
     }
 
-    if ! defined(Class['dhcp']){
-      # Only debian and ubuntu have this style of defaults for startup.
-      case $::osfamily {
-        'Debian': {
-          file { '/etc/default/isc-dhcp-server':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            before  => Package[$packagename],
-            notify  => Service[$servicename6],
-            content => template('dhcp/debian/default_isc-dhcp-server'),
-          }
-        }
-        'RedHat': {
-          if versioncmp($::operatingsystemmajrelease, '7') >= 0 {
-            include ::systemd
-            systemd::dropin_file { 'interfaces.conf':
-              unit    => 'dhcpd6.service',
-              content => template('dhcp/redhat/systemd-dropin6.conf.erb'),
-            }
-          } else {
-            file { '/etc/sysconfig/dhcpd':
-              ensure  => file,
-              owner   => 'root',
-              group   => 'root',
-              mode    => '0644',
-              before  => Package[$packagename],
-              notify  => Service[$servicename6],
-              content => template('dhcp/redhat/sysconfig-dhcpd'),
-            }
-          }
-        }
-        /^(FreeBSD|DragonFly)$/: {
-          $interfaces_line = join($dhcp6_interfaces, ' ')
-          augeas { 'set listen interfaces':
-            context => '/files/etc/rc.conf',
-            changes => "set dhcpd_ifaces '\"${interfaces_line}\"'",
-            before  => Package[$packagename],
-            notify  => Service[$servicename6],
-          }
-        }
-        default: {
-        }
+    if ! defined(Class['dhcp::defaults']){
+      class { 'dhcp::defaults':
+        dhcp6_interfaces => $dhcp6_interfaces,
       }
     }
 

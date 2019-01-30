@@ -20,8 +20,8 @@ class dhcp::params {
       case $facts['operatingsystem'] {
         'Ubuntu': {
           # Ubuntu codename bionic os release 18.04 has separate service 6
-          $servicename6 = $facts['operatingsystemrelease'] >= 18 ? {
-            true    => 'isc-dhcp-server6',
+          $servicename6 = versioncmp($facts['operatingsystemrelease'], '18.0') ? {
+            1       => 'isc-dhcp-server6',
             default => $servicename,
           }
         }

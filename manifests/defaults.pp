@@ -9,6 +9,10 @@ class dhcp::defaults (
 
   include ::dhcp::params
 
+  $packagename = $::dhcp::params::packagename
+  $servicename = $::dhcp::params::servicename
+  $servicename6 = $::dhcp::params::servicename6
+
   $ipv4 = $dhcp_interfaces ? {
     undef   => false,
     default => true,

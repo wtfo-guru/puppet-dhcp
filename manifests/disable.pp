@@ -18,7 +18,7 @@ class dhcp::disable (
       package { $packagename:
         ensure => absent,
       }
-      $services = unique([$servicename],[$servicename6])
+      $services = unique([$servicename, $servicename6])
       $require = Package[$packagename]
     }
     elsif $ipv4 {

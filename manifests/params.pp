@@ -10,13 +10,26 @@ class dhcp::params {
       $dhcp_dir     = '/etc/dhcp'
       $packagename  = 'isc-dhcp-server'
       $servicename  = 'isc-dhcp-server'
-      $servicename6 = 'isc-dhcp-server'
       $root_group   = 'root'
       $bootfiles    = {
         '00:06' => 'grub2/bootia32.efi',
         '00:07' => 'grub2/bootx64.efi',
         '00:09' => 'grub2/bootx64.efi',
       }
+
+      case $facts['operatingsystem'] {
+        'Ubuntu': {
+          # Ubuntu codename bionic os release 18.04 has separate service 6
+          $servicename6 = $facts['operatingsystemrelease'] >= 18 ? {
+            true    => 'isc-dhcp-server6',
+            default => $servicename,
+          }
+        }
+        default: {
+          $servicename6 = $servicename
+        }
+      }
+
       case $::operatingsystemrelease {
         '8': {
           $supportv6 = false

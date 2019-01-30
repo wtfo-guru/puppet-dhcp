@@ -77,12 +77,13 @@ class dhcp::defaults (
       }
     }
     /^(FreeBSD|DragonFly)$/: {
+      # I suspect we need an interfaces6_line but do not know
       $interfaces_line = join($dhcp_interfaces, ' ')
       augeas { 'set listen interfaces':
         context => '/files/etc/rc.conf',
         changes => "set dhcpd_ifaces '\"${interfaces_line}\"'",
         before  => Package[$packagename],
-        notify  => Service[$servicename],
+        notify  => $notify,
       }
     }
     default: {

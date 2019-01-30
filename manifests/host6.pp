@@ -1,7 +1,8 @@
 #class dhcp::host6
 define dhcp::host6 (
   Stdlib::Compat::Ipv6 $ip,
-  Dhcp::Macaddress $mac,
+  String $duid,
+  Optional[String] $fprefix6=undef,
   Optional[String] $comment=undef,
 ) {
 

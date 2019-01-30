@@ -1,4 +1,7 @@
 host <%= @host %> {
-  hardware ethernet   <%= @mac %>;
+  host-identifier option dhcp6.client-id <%= @duid %>;
   fixed-address6      <%= @ip %>;
+<% if @fprefix6 -%>
+  fixed-prefix6 <%= @fprefix6 %>;
+<% end -%>
 }

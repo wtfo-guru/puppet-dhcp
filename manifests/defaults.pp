@@ -9,6 +9,7 @@ class dhcp::defaults (
 
   include ::dhcp::params
 
+  $dhcp_dir = $::dhcp::params::dhcp_dir
   $packagename = $::dhcp::params::packagename
   $servicename = $::dhcp::params::servicename
   $servicename6 = $::dhcp::params::servicename6

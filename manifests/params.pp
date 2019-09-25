@@ -34,6 +34,14 @@ class dhcp::params {
       $bootfiles   = {}
     }
 
+    'Gentoo': {
+      $dhcp_dir    = '/etc/dhcp'
+      $packagename = 'dhcp'
+      $servicename = 'dhcpd'
+      $root_group  = 'root'
+      $bootfiles   = {}
+    }
+
     'RedHat': {
       $dhcp_dir    = '/etc/dhcp'
       $packagename = 'dhcp'
